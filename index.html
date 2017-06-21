@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>VueJS</title>
+	<link rel="stylesheet" href="">
+	<script src="js/vue.js"></script>
+	<script src="baza-11.json"></script>
+	<script src="js/jquery-2.1.4.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css"/>
+	<script type="text/javascript" src="bootstrap/js/bootstrap.js"></script>
+	 <style>
+
+   	.affix {
+      	top: 0;
+    	  width: 100%;
+		   z-index:9999;
+  	}
+
+  	.affix + .container-fluid {
+      padding-top: 70px;
+  	}
+
+  
+    .thumb {
+      margin-bottom: 30px;
+}
+
+footer {
+    margin: 50px 0;
+}
+</style>
+	<style type="text/css">
+		.pobednik_1 {
+			background-color: red;
+		}	
+		.pobednik_2 {
+			background-color: orange;
+		}
+		.pobednik_3 {
+			background-color: yellow;
+		}
+
+		.al_bfb {
+			background-color:#e8effc;
+		}
+		.al_bfl {
+			background-color: #f7dee1;
+		}
+		.al_rb {
+			background-color: #daf2de;
+		}
+
+
+
+		.boldborder{
+			border-right: 2px solid grey !important;
+		}
+
+	</style>
+</head>
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+<div class="container-fluid">
+    <div class="navbar-header">
+      <!--<a class="navbar-brand" href="stat-showall-11.php" >Statistika-svi</a>-->
+	  <div class="navbar-brand">Fioke</div>
+	  
+    </div>  
+	</nav>
+	<div class="container" style=" padding-top: 70px;">
+
+<div class="container">
+<div id="app">
+
+<!--
+  <div class="row">
+      <div class="col-md-11 col-md-offset-1">
+           <form  target="_blank" action="stat-odabrani-konji-21.php" role="form" class="form-horizontal">
+            <div class="form-group">
+              <label class="col-md-3">RB  - Granice</label>
+			  <div class="col-md-2">
+			   <div class="input-group">
+			  <span class="input-group-addon">Donja</span>
+			  <input  type="text" name="in_rb_donja_granica" class="form-control" id="in_rb_donja_granica" value="1.6" >
+			  </div>
+			  </div>
+              <div class="col-md-2">
+			   <div class="input-group">
+			  <span class="input-group-addon">Gornja</span>
+			  <input  type="text" name="in_rb_gornja_granica" class="form-control" id="in_rb_gornja_granica" value="5" >
+			  </div>
+			  </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3" for="in_vece_puta">Vece puta</label>
+			  <div class="col-md-2">
+              <input type="text" name="in_vece_puta" class="form-control" id="in_vece_puta" value="1.2">            
+			  </div>
+			</div>
+			<hr>
+			<div class="form-group">
+              <label class="col-md-3" for="in_koliko_poslednjih">Poslednjih</label>
+			  <div class="col-md-2">
+              <input  type="text" name="in_koliko_poslednjih" class="form-control" id=
+			  "in_koliko_poslednjih" value="10">    
+              </div>
+			  <label class="col-md-1" for="in_koliko_poslednjih_bez">Bez</label>
+			  <div class="col-md-2">
+              <input  type="text" name="in_koliko_poslednjih_bez" class="form-control" id=
+			  "in_koliko_poslednjih" value="0">    
+              </div>
+			  
+			  <div class="col-md-2">
+			  <select class=" form-control"  id="in_min_ili_odb"  name="in_min_ili_odb" >
+                                          <option value="minuta" selected >Minuta</option>
+										  
+                                          
+                       </select>					
+			  </div>
+			
+			  
+			</div>
+			<div class="form-group">
+              <label class="col-md-3" for="in_vece_puta">Start</label>
+			  <div class="col-md-2">
+			  <select class=" form-control"  id="in_startni_trenutak"  name="in_startni_trenutak" >
+                                          <option value="ceo" selected>Ceo interval</option>
+                                          <option value="odtrenutka">Od trenutka</option>
+                       </select>					
+
+			  </div>			  			  
+			</div>		
+		
+			<div class="form-group">
+              <label class="col-md-3" for="in_vece_puta">Kvota ili procenat</label>
+			  <div class="col-md-2">
+			  <select class=" form-control"  id="in_kvota_ili_procenat"  name="in_kvota_ili_procenat" >
+                                          <option value="kvota" selected>Kvota</option>
+                                          <option value="procenat">Procenat</option>
+                       </select>					
+
+			  </div>
+			  <div class="col-md-2">
+			  <button type="submit" class="btn btn-info col-md-offset-3">Prikaži za odabrane vrednosti</button>
+			  </div>
+			  
+			  
+			</div>
+			
+			
+			
+			
+            </form>
+      </div>
+    </div>
+-->
+<hr>
+
+<table class="table table-condensed  table-striped table-bordered">
+<thead>
+	<tr>
+		<!--<th></th>-->
+		<th> 
+		<select v-model="search_tip"> 
+			<option value=""> - svi  -
+			</option>
+			<option v-for="moption  in lista_tip" :value="moption">
+				{{moption}}
+			</option>
+		</select>	
+		</th>
+		<th> 
+		<select v-model="search_podtip">
+		<option value=""> - svi -
+			</option>
+			<option v-for="moption  in lista_podtip" :value="moption">
+				{{moption}}
+			</option>
+		</select>	
+
+		</th>
+		<th>  <input type="text" v-model="search_ime" placeholder="ime"></th>
+		<th> 
+		<select v-model="search_tehnologija">
+		<option value=""> - svi -
+			</option>
+			<option v-for="moption  in lista_tehnologija" :value="moption">
+				{{moption}}
+			</option>
+		</select>
+		</th>
+		<th>
+		<select v-model="search_fioka">
+		<option value=""> - svi -
+			</option>
+			<option v-for="moption  in lista_fioka" :value="moption">
+				{{moption}}
+			</option>
+		</select>	
+		</th>
+		<th> 6</th>
+		<th> 7</th>
+
+	</tr>
+</thead>	
+<tbody>
+	<tr v-for="(red, ireda) in filtriran_niz_komponenti">
+
+		<td  class="text-nowrap" v-for="(polje, ipolja) in red"  
+		>{{polje}}</td>
+
+
+
+<!--
+		<template v-if="ireda==0">
+		<th  v-for="(polje, ipolja) in red"  
+		:class="{
+			pobednik_1: polje==1 && ipolja % 3 ==0,
+			pobednik_2: polje==2 && ipolja % 3 ==0,
+			pobednik_3: polje==3 && ipolja % 3 ==0,
+			boldborder: ipolja % 3 ==0
+		}
+		">{{ polje.substring(0,3) }} </th>
+		</template>
+		<template v-else>
+		<td  class="text-nowrap" v-for="(polje, ipolja) in red"  
+		>{{polje}}</td>
+		</template>
+-->
+	</tr>
+</tbody>	
+</table>
+
+
+</div>
+
+
+
+</div>
+<script>
+
+
+
+new Vue({
+	el: '#app',
+  data: {
+  	in_rb_gornja_granica :5,
+	in_vece_puta :1.2,
+    search_tip:'',
+    search_podtip:'',
+    search_ime:'',
+    search_tehnologija:'',
+    search_fioka:'',
+    niz_komponenti: gl_niz_komponenti    
+  },
+  computed:{
+  	lista_tip: function (){
+  		//izvlaci unique elemnte iz niza objekata po properiju (tip)
+		let unique = [...new Set(this.niz_komponenti.map(item => item.tip))];
+		//let unique = [1,2,3];
+		return unique;
+  	},
+  	lista_podtip: function (){
+  		var vm=this;
+  		//vm.clear_search_fields();
+  		vm.search_podtip="";
+  		//izvlaci unique elemnte iz niza objekata po propertiju (tip)
+		let unique = [...new Set(this.niz_komponenti
+			.filter(function(red){
+  			return red.tip==vm.search_tip;
+  			})
+  			.map(item => item.podtip))
+		];
+		//let unique = [1,2,3];
+		return unique;
+  	},
+  	lista_tehnologija: function (){
+  		//izvlaci unique elemnte iz niza objekata po properiju (tip)
+		let unique = [...new Set(this.niz_komponenti.map(item => item.tehnologija))];
+		//let unique = [1,2,3];
+		return unique;
+  	},
+  	lista_fioka: function (){
+  		//izvlaci unique elemnte iz niza objekata po properiju (tip)
+		let unique = [...new Set(this.niz_komponenti.map(item => item.fioka))];
+		//let unique = [1,2,3];
+		return unique.sort();
+  	},
+  	filtriran_niz_komponenti : function(){
+  		var vm=this;
+  		var radni_arr = this.niz_komponenti;
+  		if(vm.search_tip!=""){
+	  		radni_arr = radni_arr.filter(function(red){
+  				return red.tip==vm.search_tip;
+  			});
+  		}
+  		if(vm.search_podtip!=""){
+	  		radni_arr = radni_arr.filter(function(red){
+  				return red.podtip==vm.search_podtip;
+  			});
+  		}
+  		if(vm.search_tehnologija!=""){
+	  		radni_arr = radni_arr.filter(function(red){
+  				return red.tehnologija==vm.search_tehnologija;
+  			});
+  		}
+  		if(vm.search_fioka!=""){
+	  		radni_arr = radni_arr.filter(function(red){
+  				return red.fioka==vm.search_fioka;
+  			});
+  		}
+  		if(vm.search_ime!=""){
+	  		radni_arr = radni_arr.filter(function(red){
+  				//return red.ime==vm.search_ime;
+  				//alert(red.ime.indexOf(vm.search_ime));
+				//return !(red.ime.indexOf(vm.search_ime));
+				return red.ime.indexOf(vm.search_ime) > -1 ? true: false;
+
+  			});
+  		}
+  		return radni_arr;
+
+  	}
+  }
+});
+</script>
+</body>
+</html>
